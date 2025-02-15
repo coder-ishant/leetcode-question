@@ -17,10 +17,10 @@ public class Solution {
             for (int j = i; j < s.length(); j++) {
                 if (isPalindrome(s, i, j)) {
                     count++;
-                    if (count1 == 2) {
+                   /* if (count1 == 2) {
                         count1 = 0;
                         break;
-                    }
+                    }*/
                 }
             }
         }
