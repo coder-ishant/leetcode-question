@@ -1,39 +1,28 @@
 class Solution {
-    public String longestPalindrome(String s) {
-        if (s == null || s.length() == 0) return "";
-        String t = preprocess(s);
-        int[] p = new int[t.length()];
-        int center = 0, right = 0, maxLen = 0, maxCenter = 0;
-
-        for (int i = 1; i < t.length() - 1; i++) {
-            int mirror = 2 * center - i;
-
-            if (right > i) {
-                p[i] = Math.min(right - i, p[mirror]);
-            }
-            while (t.charAt(i + 1 + p[i]) == t.charAt(i - 1 - p[i])) {
-                p[i]++;
-            }
-            if (i + p[i] > right) {
-                center = i;
-                right = i + p[i];
-            }
-            if (p[i] > maxLen) {
-                maxLen = p[i];
-                maxCenter = i;
-            }
+    public static String commonSubstring(String s,int start,int end){
+        while(start>=0 && end <s.length() && s.charAt(start)==s.charAt(end)){
+            start--;
+            end++;
         }
-        int start = (maxCenter - maxLen) / 2;
-        return s.substring(start, start + maxLen);
+        return s.substring(start+1,end);
     }
-    private static String preprocess(String s) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("^");
-        for (char c : s.toCharArray()) {
-            sb.append("#").append(c);
+    public String longestPalindrome(String s) {
+        String longest="";
+        for(int center=0;center<s.length();center++){
+            int i=center;
+            int j=center;
+            String oddLongest=commonSubstring(s,i,j);
+
+            if(longest.length()<oddLongest.length()){
+                longest=oddLongest;
+            }
+            i=center;
+            j = center + 1;
+            String evenLongest=commonSubstring(s,i,j);
+            if(longest.length()<evenLongest.length()){
+                longest=evenLongest;
+            }
         }
-        sb.append("#$");
-        return sb.toString();
+        return longest;
     }
 }
-
