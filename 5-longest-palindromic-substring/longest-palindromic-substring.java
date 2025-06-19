@@ -1,28 +1,36 @@
 class Solution {
-    public static String commonSubstring(String s,int start,int end){
-        while(start>=0 && end <s.length() && s.charAt(start)==s.charAt(end)){
-            start--;
-            end++;
-        }
-        return s.substring(start+1,end);
-    }
     public String longestPalindrome(String s) {
-        String longest="";
-        for(int center=0;center<s.length();center++){
-            int i=center;
-            int j=center;
-            String oddLongest=commonSubstring(s,i,j);
+        if(s==""){
+            return s;
+        }
+        int maxLen=1,start=0;
+        int n=s.length();
+        boolean[][] dp=new boolean[n][n];
 
-            if(longest.length()<oddLongest.length()){
-                longest=oddLongest;
-            }
-            i=center;
-            j = center + 1;
-            String evenLongest=commonSubstring(s,i,j);
-            if(longest.length()<evenLongest.length()){
-                longest=evenLongest;
+        for(int i=0;i<n;i++){
+            dp[i][i]=true;
+        }
+
+        for(int i=0;i<n-1;i++){
+            if(s.charAt(i)==s.charAt(i+1)){
+                dp[i][i+1]=true;
+                start=i;
+                maxLen=2;
             }
         }
-        return longest;
+
+        for(int i=3;i<=n;i++){
+            for(int j=0;j<n-i+1;j++){
+                int len=i+j-1;
+                if(s.charAt(j)==s.charAt(len) && dp[j+1][len-1]){
+                    dp[j][len]=true;
+                    if(i>maxLen){
+                        start=j;
+                        maxLen=i;
+                    }
+                }
+            }
+        }
+        return s.substring(start,start+maxLen);
     }
 }
