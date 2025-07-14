@@ -10,11 +10,23 @@
  */
 class Solution {
     public int getDecimalValue(ListNode head) {
-      int result = 0;
-        while (head != null) {
-            result = (result << 1) | head.val;
-            head = head.next;
+     // Reverse the linked list
+        ListNode prev = null;
+        ListNode curr = head;
+        while (curr != null) {
+            ListNode nextNode = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextNode;
         }
-        return result;
+
+        int decimal = 0, count = 0;
+        while (prev != null) {
+            decimal += prev.val * Math.pow(2, count);
+            prev = prev.next;
+            count++;
+        }
+
+        return decimal;
     }
 }
